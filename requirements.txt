@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain-core
+langchain-google-genai
+langchain-tavily
+langchain-google-genai
+geopy
+requests
+uuid
+python-dotenv
