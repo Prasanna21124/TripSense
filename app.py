@@ -48,7 +48,11 @@ with st.sidebar.expander("ℹ️ About TripSense"):
 -  Packing suggestions  
     """)
 
-agent = build_agent()
+@st.cache_resource
+def get_agent():
+    return build_agent()
+
+agent = get_agent()
 
 history = load_history()
 
