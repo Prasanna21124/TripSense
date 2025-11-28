@@ -1,6 +1,6 @@
 import streamlit as st
 from agent import build_agent
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage
 from history_manager import load_history, add_message
 import uuid
 import time
