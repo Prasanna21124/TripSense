@@ -8,6 +8,10 @@ import time
 if "last_response" not in st.session_state:
     st.session_state.last_response = None
 
+if "conversation" not in st.session_state:
+    st.session_state.conversation = []
+
+
 # Streamline effect for AI responses
 def typewriter(text):
     placeholder = st.empty()
@@ -71,6 +75,7 @@ else:
 user_input = st.chat_input("Ask anything about travel...")
 
 if user_input:
+    st.session_state.conversation.append({"role": "user", "content": user_input})
 
     # Show user bubble
     with st.chat_message("user"):
@@ -81,7 +86,14 @@ if user_input:
     # Loading animation
     with st.spinner("Processing..."):
         try:
-            output = agent.invoke({"messages": [HumanMessage(content=user_input)]})
+            output = agent.invoke({
+                "messages": [
+                    HumanMessage(content=m["content"]) if m["role"]=="user" 
+                    else m
+                    for m in st.session_state.conversation
+                ]
+            })
+
         except Exception as e:
             with st.chat_message("assistant"):
                 st.error(f"⚠️ Something went wrong: {e}")
@@ -100,6 +112,7 @@ if user_input:
     # Display assistant bubble
     with st.chat_message("assistant"):
         typewriter(final_text)
+    st.session_state.conversation.append({"role": "assistant", "content": final_text})
 
     st.session_state.last_response = final_text
     add_message("assistant", final_text)
